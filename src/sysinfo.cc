@@ -448,6 +448,10 @@ std::string GetSystemName() {
     str += std::to_string(arch_version_struct.arch_version);
   }
   return str;
+// <aztec> dont rely on gethostname
+#elif defined(__wasm__)
+  return "wasm";
+// </aztec>
 #else
 #ifndef HOST_NAME_MAX
 #ifdef BENCHMARK_HAS_SYSCTL  // BSD/Mac doesn't have HOST_NAME_MAX defined

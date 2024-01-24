@@ -142,6 +142,12 @@ double ProcessCPUUsage() {
   if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &spec) == 0)
     return MakeTime(spec);
   DiagnoseAndExit("clock_gettime(CLOCK_PROCESS_CPUTIME_ID, ...) failed");
+#elif defined(__wasm__)
+  // <aztec>
+  // We define a fallback that works with wasi. We return something
+  // obviously wrong - we don't want per-thread timing.
+  return 0;
+  // </ aztec>
 #else
   struct rusage ru;
   if (getrusage(RUSAGE_SELF, &ru) == 0) return MakeTime(ru);
