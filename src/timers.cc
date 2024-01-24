@@ -144,9 +144,10 @@ double ProcessCPUUsage() {
   DiagnoseAndExit("clock_gettime(CLOCK_PROCESS_CPUTIME_ID, ...) failed");
 #elif defined(__wasm__)
   // <aztec>
-  // We define a fallback that works with wasi. We return something
-  // obviously wrong - we don't want per-thread timing.
-  return 0;
+  // We define a fallback that works with wasi
+  struct timeval tv;
+  gettimeofday(&tv, nullptr);
+  return static_cast<int64_t>(tv.tv_sec) * 1000000 + tv.tv_usec;
   // </ aztec>
 #else
   struct rusage ru;
@@ -201,9 +202,10 @@ double ThreadCPUUsage() {
   DiagnoseAndExit("clock_gettime(CLOCK_THREAD_CPUTIME_ID, ...) failed");
 #else
   // <aztec>
-  // We define a fallback that works with wasi. We return something
-  // obviously wrong - we don't want per-thread timing.
-  return 0;
+  // We define a fallback that works with wasi
+  struct timeval tv;
+  gettimeofday(&tv, nullptr);
+  return static_cast<int64_t>(tv.tv_sec) * 1000000 + tv.tv_usec;
   // </ aztec>
 #endif
 }
