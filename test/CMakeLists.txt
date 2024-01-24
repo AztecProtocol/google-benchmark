@@ -2,7 +2,12 @@
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 
-find_package(Threads REQUIRED)
+# <aztec>
+# aztec google-benchmark change: We have threads available in wasi-threads but can't call find_package(THREADS)
+# This works around us being able to call benchmarks in wasmtime.
+# # Ensure we have pthreads
+# find_package(Threads REQUIRED)
+# </aztec>
 include(CheckCXXCompilerFlag)
 
 add_cxx_compiler_flag(-Wno-unused-variable)

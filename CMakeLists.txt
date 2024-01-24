@@ -310,9 +310,13 @@ if (NOT BENCHMARK_ENABLE_EXCEPTIONS AND HAVE_STD_REGEX
 endif()
 
 cxx_feature_check(STEADY_CLOCK)
-# Ensure we have pthreads
 set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads REQUIRED)
+# <aztec>
+# aztec google-benchmark change: We have threads available in wasi-threads but can't call find_package(THREADS)
+# This works around us being able to call benchmarks in wasmtime.
+# # Ensure we have pthreads
+# find_package(Threads REQUIRED)
+# </aztec>
 cxx_feature_check(PTHREAD_AFFINITY)
 
 if (BENCHMARK_ENABLE_LIBPFM)
