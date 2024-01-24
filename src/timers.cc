@@ -194,7 +194,11 @@ double ThreadCPUUsage() {
   if (clock_gettime(CLOCK_THREAD_CPUTIME_ID, &ts) == 0) return MakeTime(ts);
   DiagnoseAndExit("clock_gettime(CLOCK_THREAD_CPUTIME_ID, ...) failed");
 #else
-#error Per-thread timing is not available on your system.
+  // <aztec>
+  // We define a fallback that works with wasi. We return something
+  // obviously wrong - we don't want per-thread timing.
+  return 0;
+  // </ aztec>
 #endif
 }
 
