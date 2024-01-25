@@ -42,8 +42,10 @@ endif()
 # <aztec>
 # aztec google-benchmark change: We have threads available in wasi-threads but can't call find_package(THREADS)
 # This works around us being able to call benchmarks in wasmtime.
-## Link threads.
-# target_link_libraries(benchmark PRIVATE Threads::Threads)
+# Original comment: Link threads.
+if(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "wasm32")
+  target_link_libraries(benchmark PRIVATE Threads::Threads)
+endif()
 # </aztec>
 
 target_link_libraries(benchmark PRIVATE ${BENCHMARK_CXX_LIBRARIES})

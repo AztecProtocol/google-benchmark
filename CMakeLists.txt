@@ -314,8 +314,10 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 # <aztec>
 # aztec google-benchmark change: We have threads available in wasi-threads but can't call find_package(THREADS)
 # This works around us being able to call benchmarks in wasmtime.
-# # Ensure we have pthreads
-# find_package(Threads REQUIRED)
+# Original comment: Ensure we have pthreads
+if(NOT CMAKE_SYSTEM_PROCESSOR MATCHES "wasm32")
+  find_package(Threads REQUIRED)
+endif()
 # </aztec>
 cxx_feature_check(PTHREAD_AFFINITY)
 
